@@ -15,6 +15,7 @@ import * as PluginsActions from './actions/plugins';
 import * as QueueActions from './actions/queue';
 import * as SettingsActions from './actions/settings';
 import * as ScrobblingActions from './actions/scrobbling';
+import * as FavoritesActions from './actions/favorites';
 
 import './app.global.scss';
 import styles from './styles.scss';
@@ -217,6 +218,13 @@ class App extends React.Component {
     );
   }
 
+  addCurrentTrackToFavorites () {
+    const currentTrack = this.props.queue.queueItems[this.props.queue.currentSong];
+    if (currentTrack) {
+      this.props.actions.addFavoriteTrack(currentTrack);
+    }
+  }
+
   renderFooter (settings) {
     return (
       <Footer className={styles.footer}>
@@ -229,6 +237,7 @@ class App extends React.Component {
           <div className={styles.track_info_wrapper}>
             {this.renderCover()}
             {this.renderTrackInfo()}
+            <FontAwesome name='star' onClick={this.addCurrentTrackToFavorites.bind(this)}/>
           </div>
           {this.renderPlayerControls()}
           {this.renderVolumeControl(settings)}
@@ -350,6 +359,7 @@ function mapDispatchToProps (dispatch) {
         PlayerActions,
         PlaylistsActions,
         PluginsActions,
+        FavoritesActions,
         Actions
       ),
       dispatch
